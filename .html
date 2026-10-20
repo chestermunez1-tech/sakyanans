@@ -1,0 +1,270 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParkSmart | Parking Lot Management</title>
+    <link rel="stylesheet" href=".css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <div class="brand-icon">P</div>
+            <div>
+                <strong>ParkSmart</strong>
+                <small>LOT MANAGEMENT</small>
+            </div>
+        </div>
+
+        <nav>
+            <a class="nav-link active" href="#dashboard">⌂ Dashboard</a>
+            <a class="nav-link" href="#parking">▦ Parking Lot</a>
+            <a class="nav-link" href="#analytics">▥ Analytics</a>
+            <a class="nav-link" href="#activity">◷ Activity Log</a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <span class="status-dot"></span>
+            <div>
+                <b>Simulation Online</b>
+                <small>Local demo system</small>
+            </div>
+        </div>
+    </aside>
+
+    <main class="main" id="dashboard">
+        <header class="topbar">
+            <div>
+                <p class="eyebrow">PARKING OPERATIONS</p>
+                <h1>Parking Lot Dashboard</h1>
+                <p class="subheading">
+                    Monitor spaces and simulate cars entering or leaving.
+                </p>
+            </div>
+
+            <div class="topbar-right">
+                <div class="live-label">
+                    <span class="status-dot"></span> SYSTEM ACTIVE
+                </div>
+                <div class="date-box">
+                    <span>SIMULATION TIME</span>
+                    <strong id="simTime">08:00 AM</strong>
+                </div>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Total Spaces</span>
+                    <span class="stat-icon blue">▦</span>
+                </div>
+                <strong id="totalSpaces">20</strong>
+                <small>Parking capacity</small>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Occupied</span>
+                    <span class="stat-icon green">🚘</span>
+                </div>
+                <strong id="occupiedCount">0</strong>
+                <small>Cars currently parked</small>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Available</span>
+                    <span class="stat-icon pale">P</span>
+                </div>
+                <strong id="availableCount">20</strong>
+                <small>Open parking spaces</small>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Cars Entered</span>
+                    <span class="stat-icon purple">↘</span>
+                </div>
+                <strong id="enteredCount">0</strong>
+                <small>Total entries this session</small>
+            </article>
+
+            <article class="stat-card">
+                <div class="stat-top">
+                    <span>Cars Left</span>
+                    <span class="stat-icon red">↗</span>
+                </div>
+                <strong id="leftCount">0</strong>
+                <small>Total departures this session</small>
+            </article>
+        </section>
+
+        <section class="content-grid">
+            <article class="panel parking-panel" id="parking">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-icon">▦</span>
+                        <div>
+                            <h2>Parking Lot Overview</h2>
+                            <p>20 individual parking spaces</p>
+                        </div>
+                    </div>
+
+                    <div class="legend">
+                        <span>
+                            <i class="legend-dot occupied-key"></i>
+                            Occupied
+                        </span>
+                        <span>
+                            <i class="legend-dot available-key"></i>
+                            Available
+                        </span>
+                    </div>
+                </div>
+
+                <div class="lot-frame">
+                    <div class="lot-top-label">
+                        <span>PARKING AREA A</span>
+                        <span>ENTRY / EXIT →</span>
+                    </div>
+
+                    <div class="parking-grid" id="parkingGrid"></div>
+
+                    <div class="drive-lane">
+                        <span>DRIVE LANE</span>
+                        <span class="lane-arrow">↑</span>
+                        <span>ENTRY / EXIT</span>
+                    </div>
+                </div>
+
+                <div class="lot-footer">
+                    <span>● Live space status</span>
+                    <span id="occupancyPercent">0% occupancy</span>
+                </div>
+            </article>
+
+            <article class="panel control-panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-icon">⚙</span>
+                        <div>
+                            <h2>Simulation Controls</h2>
+                            <p>Manage the parking lot</p>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="carAmount">Number of cars per action</label>
+                <select id="carAmount">
+                    <option value="1">1 car</option>
+                    <option value="2">2 cars</option>
+                    <option value="3">3 cars</option>
+                    <option value="5">5 cars</option>
+                </select>
+
+                <button class="action-btn enter-btn" id="enterBtn">
+                    ↘ Simulate Car Entry
+                </button>
+
+                <button class="action-btn leave-btn" id="leaveBtn">
+                    ↗ Simulate Car Leaving
+                </button>
+
+                <div class="divider"></div>
+
+                <button class="action-btn run-btn" id="runBtn">
+                    ▶ Run Auto Simulation
+                </button>
+
+                <button class="action-btn reset-btn" id="resetBtn">
+                    ↻ Reset Simulation
+                </button>
+
+                <div class="notice" id="message" role="status">
+                    <span class="notice-icon">i</span>
+                    <span>
+                        <b>Ready to simulate</b>
+                        <small>Choose an action to begin.</small>
+                    </span>
+                </div>
+
+                <div class="capacity-block">
+                    <div>
+                        <span>Lot capacity</span>
+                        <b id="capacityText">0 / 20 spaces</b>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-bar" id="progressBar"></div>
+                    </div>
+                </div>
+            </article>
+        </section>
+
+        <section class="bottom-grid" id="analytics">
+            <article class="panel chart-panel">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-icon">▥</span>
+                        <div>
+                            <h2>Traffic Summary</h2>
+                            <p>Entries and departures during this session</p>
+                        </div>
+                    </div>
+                    <span class="chart-badge">LIVE DATA</span>
+                </div>
+
+                <div class="chart-legend">
+                    <span><i class="legend-dot entered-key"></i> Cars entered</span>
+                    <span><i class="legend-dot left-key"></i> Cars left</span>
+                </div>
+
+                <div class="chart" id="chart"></div>
+                <div class="chart-labels" id="chartLabels"></div>
+            </article>
+
+            <article class="panel activity-panel" id="activity">
+                <div class="panel-heading">
+                    <div>
+                        <span class="section-icon">◷</span>
+                        <div>
+                            <h2>Recent Activity</h2>
+                            <p>Latest simulation events</p>
+                        </div>
+                    </div>
+                    <button class="text-btn" id="clearLogBtn">Clear log</button>
+                </div>
+
+                <div class="activity-table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Action</th>
+                                <th>Cars</th>
+                                <th>Occupied</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="activityRows">
+                            <tr class="empty-row">
+                                <td colspan="4">
+                                    No activity yet. Start the simulation.
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+
+        <footer>
+            <span>ParkSmart Simulation</span>
+            <span>Educational demo · HTML, CSS & JavaScript</span>
+        </footer>
+    </main>
+
+    <script src="1.js"></script>
+</body>
+</html>
